@@ -66,7 +66,7 @@
   window.resizeBy(800-innerWidth, output.offsetHeight-innerHeight);
 
   // Close popup on blur
-  window.onblur = close;
+  // window.onblur = close;
 
   // The selected issue
   var sel; 
@@ -113,10 +113,10 @@
     else if (key == 39 || key == 13) { // Right, Enter
       go();
     }
-    else {
-      select(document.getElementById('e' + String.fromCharCode(key)));
-      go();
-    }
+    // else {
+    //   select(document.getElementById('e' + String.fromCharCode(key)));
+    //   go();
+    // }
   });
   </script>
 </html>
