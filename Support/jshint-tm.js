@@ -71,7 +71,7 @@ function getRcFilePath() {
   }
   // check in case it's '/.jshintrc'
   exists = existsSync( filePath );
-  return filePath;
+  return exists && filePath;
 
 }
 
