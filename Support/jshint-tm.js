@@ -83,8 +83,9 @@ module.exports = function(options) {
     }
     if (jshint) {
       var rcFilePath = getRcFilePath();
-      body += '<div class="rc">Using options from ' + rcFilePath + '</div>';
+
       if ( rcFilePath ) {
+        body += '<div class="rc">Using options from ' + rcFilePath + '</div>';
         var jshintrcFile = fs.readFileSync( rcFilePath, 'utf8' );
         options = JSON.parse( jshintrcFile );
       }
