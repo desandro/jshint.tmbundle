@@ -1,5 +1,9 @@
+
+'use strict';
+
 var fs = require('fs');
 var https = require('https');
+var path = require('path');
 var env = process.env || process.ENV;
 var jshintPath = __dirname + '/jshint.js';
 var entities = {
@@ -54,6 +58,21 @@ function autoupdate(callback) {
   });
 }
 
+function getRcFilePath() {
+  var filePath = path.resolve( env.TM_FILEPATH, '../.jshintrc'  );
+
+  // walk up directories, looking for .jshintrc
+  var exists = fs.existsSync( filePath );
+  while ( !exists && filePath !== '/.jshintrc' ) {
+    exists = fs.existsSync( filePath );
+    filePath = path.resolve( filePath, '../../.jshintrc' );
+  }
+  // check in case it's '/.jshintrc'
+  exists = fs.existsSync( filePath );
+  return filePath;
+
+}
+
 module.exports = function(options) {
   autoupdate(function(err, jshint) {
     var body = '';
@@ -61,6 +80,12 @@ module.exports = function(options) {
       body += '<div class="error">' + err + '</div>';
     }
     if (jshint) {
+      var rcFilePath = getRcFilePath();
+      body += '<div class="rc">Using options from ' + rcFilePath + '</div>';
+      if ( rcFilePath ) {
+        var jshintrcFile = fs.readFileSync( rcFilePath, 'utf8' );
+        options = JSON.parse( jshintrcFile );
+      }
 
       var file = env.TM_FILEPATH;
       var input = fs.readFileSync(file, 'utf8');
