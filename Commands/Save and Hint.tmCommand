@@ -6,24 +6,11 @@
 	<string>saveActiveFile</string>
 	<key>command</key>
 	<string>#!/usr/bin/env node
-var env = process.env || process.ENV,
-    jshint = require(env.TM_BUNDLE_SUPPORT + '/jshint-tm');
+var env = process.env || process.ENV;
+var jshintTM = require(env.TM_BUNDLE_SUPPORT + '/jshint-tm');
 
-jshint({
-    es5: true,
-    forin: true,
-    predef: [
-        // CommonJS
-        "exports",
-        "require",
-        "module",
-        // NodeJS
-        "GLOBAL",
-        "process",
-        "__filename",
-        "__dirname"
-    ]
-});</string>
+jshintTM();
+</string>
 	<key>input</key>
 	<string>none</string>
 	<key>inputFormat</key>
@@ -31,7 +18,7 @@ jshint({
 	<key>keyEquivalent</key>
 	<string>@k</string>
 	<key>name</key>
-	<string>Save &amp; Hint</string>
+	<string>Hint</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
