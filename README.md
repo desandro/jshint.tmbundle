@@ -1,4 +1,4 @@
-#JSHint TextMate Bundle
+# JSHint TextMate Bundle
 
 TextMate bundle for [JSHint](http://jshint.com/), the (Gentler) JavaScript Code Quality Tool.
 
@@ -7,16 +7,14 @@ TextMate bundle for [JSHint](http://jshint.com/), the (Gentler) JavaScript Code 
 Features:
 
 * Pretty UI
-* Runs automatically upon save (⌘S)
-* Can be bypassed by pressing ⇧⌘S
-* Output is only shown when errors are found
-* Window is automatically closed when it looses focus
+* Hint with ⌘K
 * Auto-updates itself to the latest version of JSHint
+* use options from `.jshintrc`
 * Based on Node.js
 
 ## Installation
 
-Download the [zip file](http://github.com/fgnass/jshint.tmbundle/zipball/master) and rename the
+Download the [zip file](http://github.com/desandro/jshint.tmbundle/zipball/master) and rename the
 extracted folder to `jshint.tmbundle`. Double-click.
 
 ## Prerequisites
@@ -29,7 +27,6 @@ This bundle uses `#!/bin/env node` to launch the node process. If you get a *nod
 
 You can set the PATH either via Preferences → Advanced → Shell Variables or by editing `~/.MacOSX/environment.plist`.
 
-## Contributors
+## .jshintrc
 
-* [Pierre Bertet](https://github.com/bpierre/)
-* [Rob-ot](https://github.com/Rob-ot/)
+For project-wide options, you can save a `.jshintrc` file. The bundle will crawl up your directory tree and use the first `.jshintrc` it finds as its options.
