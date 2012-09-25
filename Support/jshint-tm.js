@@ -58,17 +58,19 @@ function autoupdate(callback) {
   });
 }
 
+var existsSync = fs.existsSync || path.existsSync;
+
 function getRcFilePath() {
   var filePath = path.resolve( env.TM_FILEPATH, '../.jshintrc'  );
 
   // walk up directories, looking for .jshintrc
-  var exists = fs.existsSync( filePath );
+  var exists = existsSync( filePath );
   while ( !exists && filePath !== '/.jshintrc' ) {
-    exists = fs.existsSync( filePath );
+    exists = existsSync( filePath );
     filePath = path.resolve( filePath, '../../.jshintrc' );
   }
   // check in case it's '/.jshintrc'
-  exists = fs.existsSync( filePath );
+  exists = existsSync( filePath );
   return filePath;
 
 }
