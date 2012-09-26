@@ -66,13 +66,11 @@ function getRcFilePath() {
   // walk up directories, looking for .jshintrc
   var exists = existsSync( filePath );
   while ( !exists && filePath !== '/.jshintrc' ) {
-    exists = existsSync( filePath );
     filePath = path.resolve( filePath, '../../.jshintrc' );
+    exists = existsSync( filePath );
   }
-  // check in case it's '/.jshintrc'
-  exists = existsSync( filePath );
-  return exists && filePath;
 
+  return exists && filePath;
 }
 
 module.exports = function(options) {
