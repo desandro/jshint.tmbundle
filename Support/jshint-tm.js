@@ -74,7 +74,8 @@ function getRcFilePath() {
 }
 
 module.exports = function(options) {
-  autoupdate(function(err, jshint) {
+  var jshint = require( jshintPath );
+  // autoupdate(function(err, jshint) {
     var body = '';
     if (err) {
       body += '<div class="error">' + err + '</div>';
@@ -123,5 +124,5 @@ module.exports = function(options) {
         process.exit(205); //show_html
       });
     }
-  });
+  // });
 };
