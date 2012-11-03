@@ -74,12 +74,12 @@ function getRcFilePath() {
 }
 
 module.exports = function(options) {
-  var jshint = require( jshintPath );
+  var jshint = require( jshintPath ).JSHINT;
   // autoupdate(function(err, jshint) {
     var body = '';
-    if (err) {
-      body += '<div class="error">' + err + '</div>';
-    }
+    // if (err) {
+    //   body += '<div class="error">' + err + '</div>';
+    // }
     if (jshint) {
       var rcFilePath = getRcFilePath();
 
