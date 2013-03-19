@@ -1,16 +1,17 @@
 
-'use strict';
-
 var fs = require('fs');
 var path = require('path');
 var env = process.env || process.ENV;
 var jshint = require('./jshint.js').JSHINT;
+
 var entities = {
   '&': '&amp;',
   '"': '&quot;',
   '<': '&lt;',
   '>': '&gt;'
 };
+
+var outputSrc = fs.readFileSync( __dirname + '/output.html', 'utf8');
 
 function html(s) {
   return (s || '').replace(/[&"<>]/g, function(c) {return entities[c] || c;});
@@ -72,12 +73,9 @@ module.exports = function(options) {
     });
   }
 
+  body = body || 'No JSHint errors :)';
 
-  if (body.length > 0) {
-    fs.readFile(__dirname + '/output.html', 'utf8', function(e, html) {
-      console.log(html.replace('{body}', body));
-      process.exit(205); //show_html
-    });
-  }
+  console.log( outputSrc.replace( '{body}', body ) );
+  process.exit(205); //show_html
 
 };
