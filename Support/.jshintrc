@@ -1,5 +1,6 @@
 {
-  "undef": true,
   "es5" : true,
-  "node": true
+  "node": true,
+  "undef": true,
+  "unused": true
 }
