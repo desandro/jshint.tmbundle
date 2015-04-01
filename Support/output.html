@@ -1,128 +1,173 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style type="text/css">
+<head>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      background: #e8e8e8;
+      background: #EEE;
       padding: 0;
       margin: 0;
       color: #333;
-      font-family: 'Lucida Sans', sans-serif;
-      font-size: 13px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
+      font-size: 14px;
     }
-    a.txmt { 
+
+    .error {
       display: block;
       text-decoration: none;
-      color: #444;
-      background: -webkit-gradient(linear, 0 100%, 0 0, from(#CACACA), to(#DCDCDC));
-      border-style: solid;
-      border-width: 1px 0;
-      border-color: #fff #000 #afafaf #000;
-      padding: 10px 20px;
-      text-shadow: 0 1px #fff;
+      padding: 15px 15px 15px 45px;;
+      border-top: 1px solid #CCC;
+      position: relative;
+      color: #333;
     }
-    a.txmt b {
-      color: #fff;
-      background: #b0b0b0;
-      border-radius: 2px;
-      font-size: 11px;
-      padding: 2px 6px;
-      margin-right: 4px;
-      display: inline-block;
-      vertical-align: top;
-      text-shadow: none;
+
+    .error.is-selected {
+      background: #BDF;
     }
-    a.selected {
-      background: -webkit-gradient(linear, 0 100%, 0 0, from(#8191B0), to(#B5C0D5));
-      color: #fff;
-      text-shadow: none;
-      outline: none;
+
+    .error__number {
+      position: absolute;
+      left: 15px;
+      top: 15px;
+      font-weight: bold;
+      color: #888;
     }
-    a.selected b {
-      background: #8191B0;
+
+    .error__location {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      color: #888;
     }
-    tt {
-      display: block;
-      font-size: 12px;
-      font-family: Monaco;
-      margin: 5px 0;
+
+    .error__reason {
+      font-weight: bold;
     }
-    tt em {
-      font-style: normal;
-      border-bottom: 2px solid red;
+
+    .error__evidence {
+      margin-top: 10px;
+      font-family: Consolas, Menlo, monospace;
     }
-    .error {
-      padding: 10px 20px;
-      background: -webkit-gradient(linear, 0 100%, 0 0, from(#f9eba5), to(#fdf4c5));
-      border-bottom: 1px solid #999;
+    pre, code {
+      
+    }
+
+
+    .settings {
+      width: 100%;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      background: #333;
+      color: white;
       font-size: 13px;
     }
-    .rc {
-      padding: 10px 20px;
-      font-size: 12px;
+
+    .settings td, th {
+      padding-top: 5px;
+      padding-bottom: 5px;
     }
-    </style>
-  </head>
-  <body>
-    <div id="output">{body}</div>
-  </body>
-  <script>
 
-  // Resize the window to fit the content
-  window.resizeBy(800-innerWidth, output.offsetHeight-innerHeight);
+    .settings td {
+      width: 100%;
+    }
 
-  // Close popup on blur
-  // window.onblur = close;
+    .settings th {
+      padding-left: 15px;
+    }
+  </style>
 
-  // The selected issue
-  var sel; 
+</head>
+<body>
 
-  /**
-   * Select the given element
-   */
-  function select(el) {
-    if (el) {
-      if (sel && sel != el) sel.classList.remove('selected');
-      el.classList.add('selected');
-      if (el.offsetTop < scrollY) {
-        // Scroll up
-        el.scrollIntoView();
-      }
-      else if (el.offsetTop + el.offsetHeight > innerHeight + scrollY) {
-        // Scroll down
-        el.scrollIntoView(false);
-      }
-      sel = el;
+<table class="settings">
+  <tr>
+    <th>.jshintrc</th>
+    <td>{{jshintrc}}</td>
+  </tr>
+  <tr>
+    <th>Options</th>
+    <td>{{options}}</td>
+  </tr>
+  <tr>
+    <th>Globals</th>
+    <td>{{globals}}</td>
+  </tr>
+</table>
+
+<div class="error-list">
+  {{errors}}
+</div>
+
+<script>
+
+// Resize the window to fit the content
+window.resizeBy( 800 - innerWidth, document.body.offsetHeight - innerHeight );
+
+var selectedItem;
+/**
+ * Select the given element
+ */
+function select( elem ) {
+  if ( !elem || elem == selectedItem ) {
+    return;
+  }
+  // remove previous selected
+  if ( selectedItem ) {
+    selectedItem.classList.remove('is-selected');
+  }
+  // set new selected
+  selectedItem = elem;
+  selectedItem.classList.add('is-selected');
+  // scroll
+  if ( selectedItem.offsetTop < scrollY ) {
+    // Scroll up
+    el.scrollIntoView();
+  } else if ( selectedItem.offsetTop + selectedItem.offsetHeight > innerHeight + scrollY ) {
+    // Scroll down
+    selectedItem.scrollIntoView( false );
+  }
+}
+
+//  select first item
+select( document.querySelector('.error') );
+
+var onKeydowns = {
+  // up
+  38: function() {
+    if ( selectedItem ) {
+      select( selectedItem.previousElementSibling );
+    }
+  },
+  // down
+  40: function() {
+    if ( selectedItem ) {
+      select( selectedItem.nextElementSibling );
+    }
+  },
+  // Enter
+  13: function() {
+    // go to location
+    if ( selectedItem ) {
+      window.location = selectedItem.href;
     }
   }
+};
 
-  /**
-   * Go to the selected link
-   */
-  function go() {
-    if (sel && sel.href) window.location = sel.href;
+document.addEventListener( 'keydown', function( event ) {
+  var onKeydown = onKeydowns[ event.keyCode ];
+  if ( onKeydown ) {
+    onKeydown();
+    event.preventDefault();
   }
+}, false );
 
-  // Select the first issue
-  select(e1);
+</script>
 
-  document.addEventListener('keydown', function(ev) {
-    var key = ev.which;
-    if (key == 38) { // Up
-      select(sel.previousSibling);
-      ev.preventDefault();
-    }
-    else if (key == 40) { // Down
-      select(sel.nextSibling);
-      ev.preventDefault();
-    }
-    else if (key == 39 || key == 13) { // Right, Enter
-      go();
-    }
-    // else {
-    //   select(document.getElementById('e' + String.fromCharCode(key)));
-    //   go();
-    // }
-  });
-  </script>
+</body>
 </html>
