@@ -11,7 +11,7 @@ function getRcFilePath() {
 
   // walk up directories, looking for .jshintrc
   var exists = fs.existsSync( filePath );
-  while ( !exists && filePath !== '/.jshintrc' ) {
+  while ( !exists && filePath != '/.jshintrc' ) {
     filePath = path.resolve( filePath, '../../.jshintrc' );
     exists = fs.existsSync( filePath );
   }
@@ -65,14 +65,11 @@ module.exports = function() {
     });
   }
 
-  errorsHTML = errorsHTML || 'No JSHint errors :)';
-  if ( options ) {
-    delete options.globals;
-  }
-  outputSrc = outputSrc.replace( '{{errors}}', errorsHTML )
-    .replace( '{{jshintrc}}', rcFilePath || 'no .jshintrc' )
-    .replace( '{{options}}', JSON.stringify( options ) )
-    .replace( '{{globals}}', JSON.stringify( globals ) );
+  errorsHTML = errorsHTML || '<div class="no-error">No JSHint errors 😊</div>';
+
+  outputSrc = outputSrc.replace( '{{errors}}', errorsHTML );
+  var jshintrcHTML = getJshintrcHTML( outputSrc, rcFilePath, options, globals );
+  outputSrc = outputSrc.replace( '{{jshintrc}}', jshintrcHTML );
 
   console.log( outputSrc );
   process.exit(205); //show_html
@@ -88,4 +85,34 @@ function getErrorItemHTML( context ) {
     return context[ inner ];
   });
   return html;
+}
+
+function getJshintrcHTML( outputSrc, rcFilePath, options, globals ) {
+  if ( !rcFilePath ) {
+    return '';
+  }
+
+  if ( options ) {
+    delete options.globals;
+  }
+
+  var html = '<table class="jshintrc">' +
+    '<tr><th>.jshintrc</th><td>' + rcFilePath + '</td></tr>' +
+    '<tr><th>Options</th><td>' + prettyObjText( options ) + '</td></tr>';
+
+  html += globals ? '<tr><th>Globals</th><td>' + prettyObjText( globals ) + '</td></tr>' : '';
+  html += '</table>';
+
+  return html;
+}
+
+function prettyObjText( obj ) {
+  var text = '';
+  var isFirst = true;
+  for ( var key in obj ) {
+    text += isFirst ? '' : ', ';
+    text += key + ': ' + obj[key];
+    isFirst = false;
+  }
+  return text;
 }

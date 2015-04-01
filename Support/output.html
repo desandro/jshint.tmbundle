@@ -15,7 +15,7 @@
       margin: 0;
       color: #333;
       font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .error {
@@ -25,6 +25,13 @@
       border-top: 1px solid #CCC;
       position: relative;
       color: #333;
+    }
+
+    .no-error {
+      padding: 15px;
+      background: #09F;
+      color: white;
+      font-weight: bold;
     }
 
     .error.is-selected {
@@ -58,47 +65,34 @@
       
     }
 
-
-    .settings {
+    .jshintrc {
       width: 100%;
       padding-top: 5px;
       padding-bottom: 5px;
-      background: #333;
-      color: white;
+      background: white;
+      color: #888;
       font-size: 13px;
     }
 
-    .settings td, th {
+    .jshintrc td, th {
       padding-top: 5px;
       padding-bottom: 5px;
     }
 
-    .settings td {
+    .jshintrc td {
       width: 100%;
     }
 
-    .settings th {
+    .jshintrc th {
       padding-left: 15px;
+      padding-right: 10px;
     }
   </style>
 
 </head>
 <body>
 
-<table class="settings">
-  <tr>
-    <th>.jshintrc</th>
-    <td>{{jshintrc}}</td>
-  </tr>
-  <tr>
-    <th>Options</th>
-    <td>{{options}}</td>
-  </tr>
-  <tr>
-    <th>Globals</th>
-    <td>{{globals}}</td>
-  </tr>
-</table>
+{{jshintrc}}
 
 <div class="error-list">
   {{errors}}
