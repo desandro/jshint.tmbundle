@@ -2,7 +2,7 @@
 
 TextMate bundle for [JSHint](https://jshint.com/), the (Gentler) JavaScript Code Quality Tool.
 
-![jshint.tmbundle screenshot](https://user-images.githubusercontent.com/85566/55125934-c9804080-50e1-11e9-84f8-9ebe0d40daaf.png)
+![jshint.tmbundle screenshot](https://user-images.githubusercontent.com/85566/55126692-27ae2300-50e4-11e9-8e90-2d528ec2f3c5.png)
 
 ## Installation
 
