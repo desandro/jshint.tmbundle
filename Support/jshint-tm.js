@@ -4,7 +4,7 @@ var path = require('path');
 var env = process.env;
 var jshint = require('./jshint.js').JSHINT;
 
-var outputSrc = fs.readFileSync( __dirname + '/output.html', 'utf8');
+var outputSrc = fs.readFileSync( `${__dirname}/output.html`, 'utf8');
 
 function getRcFilePath() {
   var filePath = path.resolve( env.TM_FILEPATH, '../.jshintrc'  );
@@ -22,18 +22,10 @@ function getRcFilePath() {
 function getOptions( rcFilePath ) {
   var options;
   if ( rcFilePath ) {
-    // body += '<div class="rc">Using options from ' + rcFilePath + '</div>';
     var jshintrcFile = fs.readFileSync( rcFilePath, 'utf8' );
     options = JSON.parse( jshintrcFile );
   }
   return options;
-}
-
-function extend( a, b ) {
-  for ( var prop in b ) {
-    a[ prop ] = b[ prop ];
-  }
-  return a;
 }
 
 module.exports = function() {
@@ -55,10 +47,10 @@ module.exports = function() {
       if ( !error ) {
         return;
       }
-      var context = extend( {}, error );
+      var context = Object.assign( {}, error );
       // link to position in TextMate
-      context.href = 'txmt://open?url=file://' + encodeURI( file ) +
-        '&line=' + error.line + '&column=' + error.character;
+      context.href = `txmt://open?url=file://${encodeURI( file )}` +
+        `&line=${error.line}&column=${error.character}`;
       context.number = i + 1;
 
       errorsHTML += getErrorItemHTML( context );
@@ -77,7 +69,7 @@ module.exports = function() {
 };
 
 
-var errorItemTemplate = fs.readFileSync( __dirname + '/error-item-template.mustache', 'utf8' );
+var errorItemTemplate = fs.readFileSync( `${__dirname}/error-item-template.mustache`, 'utf8' );
 var reMustache = /\{\{(([^\}\}])+)\}\}/gi;
 
 function getErrorItemHTML( context ) {
@@ -96,11 +88,12 @@ function getJshintrcHTML( outputSrc, rcFilePath, options, globals ) {
     delete options.globals;
   }
 
-  var html = '<table class="jshintrc">' +
-    '<tr><th>.jshintrc</th><td>' + rcFilePath + '</td></tr>' +
-    '<tr><th>Options</th><td>' + prettyObjText( options ) + '</td></tr>';
-
-  html += globals ? '<tr><th>Globals</th><td>' + prettyObjText( globals ) + '</td></tr>' : '';
+  var html = `<table class="jshintrc">
+       <tr><th>.jshintrc</th><td>${rcFilePath}</td></tr>
+       <tr><th>Options</th><td>${prettyObjText( options )}</td></tr>`;
+  if ( globals ) {
+    html += `<tr><th>Globals</th><td>${prettyObjText( globals )}</td></tr>`;
+  }
   html += '</table>';
 
   return html;
